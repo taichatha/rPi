@@ -29,16 +29,33 @@
         <!--android:text="@string/send" />-->
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
+                android:layout_height="wrap_content">
+        <com.facebook.widget.LoginButton
+            android:id="@+id/authButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/logo"
-            android:src="@drawable/title"
-            android:layout_centerHorizontal="true"
-            android:paddingTop="30dp"
-            android:paddingBottom="0dp" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            />
+        <Button
+            android:id="@+id/shareButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginTop="30dp"
+            android:visibility="invisible"
+            android:text="@string/share"
+            />
+
+        <!--<ImageView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/logo"-->
+            <!--android:src="@drawable/title"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:paddingTop="30dp"-->
+            <!--android:paddingBottom="0dp" />-->
     </RelativeLayout>
 
     <RelativeLayout
@@ -89,7 +106,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="~"
+            android:text="Please Wait..."
             android:id="@+id/coordinates"
             android:layout_below="@+id/currentLocation"
             android:layout_centerHorizontal="true" />

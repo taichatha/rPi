@@ -2,6 +2,7 @@ package uva.cs4720.ms3;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Gravity;
@@ -47,6 +48,8 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 
+import com.facebook.AppEventsLogger;
+
 
 //Referenced 'http://hmkcode.com/android-send-json-data-to-server/' for this milestone
 
@@ -54,8 +57,8 @@ import android.location.LocationManager;
 William Andrade - wla3ww
 Taimoor Chatha - tuc4uw
  */
-public class MainActivity extends Activity implements OnClickListener {
-
+public class MainActivity extends FragmentActivity implements OnClickListener {
+    private MainFragment mainFragment;
     Button sendIPbutton; //Button for sending IP Address
     EditText mEdit; //Get info from what user enters in form
     //TextView mText;
@@ -63,6 +66,9 @@ public class MainActivity extends Activity implements OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
         setContentView(R.layout.activity_main);
 
         /*http://www.firstdroid.com/2010/04/29/android-development-using-gps-to-get-current-location-2/*/
@@ -82,6 +88,7 @@ public class MainActivity extends Activity implements OnClickListener {
         sendIPbutton.setOnClickListener(this);
 
 
+//       public static String POST(){}
 
 //        InputMethodManager imm = (InputMethodManager)getSystemService(
 //                Context.INPUT_METHOD_SERVICE);
@@ -92,31 +99,31 @@ public class MainActivity extends Activity implements OnClickListener {
 //            public void onClick(View arg0) {
 //                //Add JSON Logic here
 //
-                String ip = "http://";
-                ip = ip + ((mEdit).getText().toString()) + "/rpi/";
-                System.out.println(ip);
-                //String json = "{\"lights\": [{\"lightId\": 1, \"red\":242,\"green\":116,\"blue\":12, \"intensity\": 0.5}],\"propagate\": true}";
+        String ip = "http://";
+        ip = ip + ((mEdit).getText().toString()) + "/rpi/";
+        System.out.println(ip);
+        //String json = "{\"lights\": [{\"lightId\": 1, \"red\":242,\"green\":116,\"blue\":12, \"intensity\": 0.5}],\"propagate\": true}";
 
-                InputStream inputStream = null;
-                String result = "";
-                try {
-                    //1. CREATE HTTPCLIENT
-                    HttpClient httpClient = new DefaultHttpClient();
-                    System.out.println("no error");
-                    //2. MAKE POST REQUEST TO GIVEN ipAddress
-                    HttpPost httpPost = new HttpPost(ip);
-                    System.out.println("no error2");
+        InputStream inputStream = null;
+        String result = "";
+        try {
+            //1. CREATE HTTPCLIENT
+            HttpClient httpClient = new DefaultHttpClient();
+            System.out.println("no error");
+            //2. MAKE POST REQUEST TO GIVEN ipAddress
+            HttpPost httpPost = new HttpPost(ip);
+            System.out.println("no error2");
 
-                    //String json = "";
-                    //3. BUILD JSON OBJECT
-                    //JSONObject jsonObject = new JSONObject();
-                    //jsonObject.accumulate("")
-                    String json = "";//"{\"lights\": [{\"lightId\": 1, \"red\":242,\"green\":116,\"blue\":12, \"intensity\": 0.5}],\"propagate\": true}";
-                    JSONObject jsonObj = new JSONObject("{\"phonetype\":\"N95\",\"cat\":\"WP\"}");
-                    json = jsonObj.toString();
-                    httpPost.setEntity(new StringEntity(json));
+            //String json = "";
+            //3. BUILD JSON OBJECT
+            //JSONObject jsonObject = new JSONObject();
+            //jsonObject.accumulate("")
+            String json = "";//"{\"lights\": [{\"lightId\": 1, \"red\":242,\"green\":116,\"blue\":12, \"intensity\": 0.5}],\"propagate\": true}";
+            JSONObject jsonObj = new JSONObject("{\"phonetype\":\"N95\",\"cat\":\"WP\"}");
+            json = jsonObj.toString();
+            httpPost.setEntity(new StringEntity(json));
 
-                    //5. SET JSON to STRING ENTITY
+            //5. SET JSON to STRING ENTITY
 //                    StringEntity se = new StringEntity(json);
 //                    System.out.println("no error3");
 //
@@ -124,37 +131,49 @@ public class MainActivity extends Activity implements OnClickListener {
 //                    httpPost.setEntity(se);
 //                    System.out.println("no error4");
 
-                    //7. SET SOME HEADERS TO INFORM SERVER ABOUT THE TYPE OF CONTENT
+            //7. SET SOME HEADERS TO INFORM SERVER ABOUT THE TYPE OF CONTENT
 //                    httpPost.setHeader("Accept", "application/json");
 //                    System.out.println("no error5");
 //                    httpPost.setHeader("Content-type", "application/json");
 //                    System.out.println("no error6");
-                    //HttpPost httpPost = new HttpPost(url);
-                    //httpPost.setEntity(new StringEntity(json));
-                    //CloseableHttpResponse response2 = httpclient.execute(httpPost);
-                    //ERROR HERE
-                    //8. EXECUTE POST REQUEST TO THE GIVEN IP ADDRESS
-                    HttpResponse httpResponse = httpClient.execute(httpPost);
+            //HttpPost httpPost = new HttpPost(url);
+            //httpPost.setEntity(new StringEntity(json));
+            //CloseableHttpResponse response2 = httpclient.execute(httpPost);
+            //ERROR HERE
+            //8. EXECUTE POST REQUEST TO THE GIVEN IP ADDRESS
+            HttpResponse httpResponse = httpClient.execute(httpPost);
 
-                    System.out.println("no error7");
+            System.out.println("no error7");
 //                    httpPost.completed();
 //                    response2.close();
 
-                    //9. RECEIVE RESPONSE AS inputStream
-                    inputStream = httpResponse.getEntity().getContent();
-                    System.out.println("no error8");
-                    //10. CONVERT inputStream to string
-                    if(inputStream != null) {
-                        result = convertInputStreamToString(inputStream);
-                        System.out.println("no error9");
-                    }
-                    else
-                        result = "Did not work!";
+            //9. RECEIVE RESPONSE AS inputStream
+            inputStream = httpResponse.getEntity().getContent();
+            System.out.println("no error8");
+            //10. CONVERT inputStream to string
+            if(inputStream != null) {
+                result = convertInputStreamToString(inputStream);
+                System.out.println("no error9");
+            }
+            else
+                result = "Did not work!";
 
-                } catch (Exception e) {
+        } catch (Exception e) {
 
-                    Log.d("InputStream", e.getLocalizedMessage());
-                }
+            Log.d("InputStream", e.getLocalizedMessage());
+        }
+//        if (savedInstanceState == null) {
+//            // Add the fragment on initial activity setup
+//            mainFragment = new MainFragment();
+//            getSupportFragmentManager()
+//                    .beginTransaction()
+//                    .add(android.R.id.content, mainFragment)
+//                    .commit();
+//        } else {
+//            // Or set the fragment from restored state info
+//            mainFragment = (MainFragment) getSupportFragmentManager()
+//                    .findFragmentById(android.R.id.content);
+//        }
 /*********************************************************************************/
     }
 
@@ -303,7 +322,20 @@ public class MainActivity extends Activity implements OnClickListener {
             Toast.makeText(getBaseContext(), "Data Sent!", Toast.LENGTH_LONG).show();
         }
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        // Logs 'install' and 'app activate' App Events.
+        AppEventsLogger.activateApp(this);
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // Logs 'app deactivate' App Event.
+        AppEventsLogger.deactivateApp(this);
+    }
     private boolean validate(){
         if(mEdit.getText().toString().trim().equals(""))
             return false;
