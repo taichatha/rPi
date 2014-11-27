@@ -67,15 +67,15 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        LocationManager mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        LocationListener mlocListener = new MyLocationListener();
+        mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, mlocListener);
 
 
         setContentView(R.layout.activity_main);
 
         /*http://www.firstdroid.com/2010/04/29/android-development-using-gps-to-get-current-location-2/*/
         /* Use the LocationManager class to obtain GPS locations */
-        LocationManager mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        LocationListener mlocListener = new MyLocationListener();
-        mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, mlocListener);
 
 
 
@@ -86,6 +86,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
         sendIPbutton = (Button) findViewById(R.id.sendIP);
         mEdit = (EditText) findViewById(R.id.enterIP);
         sendIPbutton.setOnClickListener(this);
+        coordinates = (TextView)findViewById(R.id.coordinates);
+
 
 
 //       public static String POST(){}
@@ -162,18 +164,20 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 
             Log.d("InputStream", e.getLocalizedMessage());
         }
-//        if (savedInstanceState == null) {
-//            // Add the fragment on initial activity setup
-//            mainFragment = new MainFragment();
-//            getSupportFragmentManager()
-//                    .beginTransaction()
-//                    .add(android.R.id.content, mainFragment)
-//                    .commit();
-//        } else {
-//            // Or set the fragment from restored state info
-//            mainFragment = (MainFragment) getSupportFragmentManager()
-//                    .findFragmentById(android.R.id.content);
-//        }
+
+
+        if (savedInstanceState == null) {
+            // Add the fragment on initial activity setup
+            mainFragment = new MainFragment();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(android.R.id.content, mainFragment)
+                    .commit();
+        } else {
+            // Or set the fragment from restored state info
+            mainFragment = (MainFragment) getSupportFragmentManager()
+                    .findFragmentById(android.R.id.content);
+        }
 /*********************************************************************************/
     }
 
@@ -187,7 +191,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
             String Text = "Latitude: " + loc.getLatitude() + "\nLongitude:  " + loc.getLongitude();
 //            Toast.makeText( getApplicationContext(),Text, Toast.LENGTH_SHORT).show();
 
-            coordinates = (TextView)findViewById(R.id.coordinates);
 
             coordinates.setText(Text);
         }

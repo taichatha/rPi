@@ -3,7 +3,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -11,6 +16,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+
 import android.widget.Toast;
 
 import com.facebook.FacebookRequestError;
@@ -28,11 +35,12 @@ import org.json.JSONObject;
 
 public class MainFragment extends Fragment {
     private Button shareButton;
+    private Context globalContext = null;
     private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
     private static final String PENDING_PUBLISH_KEY = "pendingPublishReauthorization";
     private boolean pendingPublishReauthorization = false;
     private static final String TAG = MainFragment.class.getSimpleName();
-
+    TextView coordinates;
     private UiLifecycleHelper uiHelper;
 
     private final List<String> permissions;
@@ -40,10 +48,14 @@ public class MainFragment extends Fragment {
     public MainFragment() {
         permissions = Arrays.asList("user_status");
     }
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        globalContext = this.getActivity();
         uiHelper = new UiLifecycleHelper(getActivity(), callback);
         uiHelper.onCreate(savedInstanceState);
     }
@@ -53,6 +65,11 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_main, container, false);
         shareButton = (Button) view.findViewById(R.id.shareButton);
+        coordinates = (TextView)view.findViewById(R.id.coordinates);
+        LocationManager mlocManager = (LocationManager)globalContext.getSystemService(Context.LOCATION_SERVICE);
+        LocationListener mlocListener = new MyLocationListener();
+        mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, mlocListener);
+
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,11 +165,14 @@ public class MainFragment extends Fragment {
                 return;
             }
 
+
+
+            String text = coordinates.getText().toString();
             Bundle postParams = new Bundle();
-            postParams.putString("name", "Facebook SDK for Android");
-            postParams.putString("caption", "Build great social apps and get more installs.");
-            postParams.putString("description", "The Facebook SDK for Android makes it easier and faster to develop Facebook integrated Android apps.");
-            postParams.putString("link", "https://developers.facebook.com/android");
+            postParams.putString("name", "My Location!");
+            postParams.putString("caption", "Thanks to Hot and Cold");
+            postParams.putString("description", text);
+            postParams.putString("link", null);
             postParams.putString("picture", "https://raw.github.com/fbsamples/ios-3.x-howtos/master/Images/iossdk_logo.png");
 
             Request.Callback callback= new Request.Callback() {
@@ -199,4 +219,41 @@ public class MainFragment extends Fragment {
         }
         return true;
     }
+
+    /* Class My Location Listener */
+    public class MyLocationListener implements LocationListener {
+        @Override
+        public void onLocationChanged(Location loc){
+            loc.getLatitude();
+            loc.getLongitude();
+            String Text = "Latitude: " + loc.getLatitude() + "\nLongitude:  " + loc.getLongitude();
+//            Toast.makeText( getApplicationContext(),Text, Toast.LENGTH_SHORT).show();
+
+
+            coordinates.setText(Text);
+        }
+
+
+        @Override
+        public void onProviderDisabled(String provider){
+            Toast.makeText( globalContext.getApplicationContext(),
+                    "Gps Disabled",
+
+                    Toast.LENGTH_SHORT ).show();
+
+        }
+
+
+        @Override
+        public void onProviderEnabled(String provider){
+            Toast.makeText( globalContext.getApplicationContext(),"Gps Enabled",Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras){
+        }
+
+    }/* End of Class MyLocationListener */
+
+
 }
