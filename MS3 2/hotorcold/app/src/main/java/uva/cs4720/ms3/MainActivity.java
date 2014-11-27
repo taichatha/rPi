@@ -59,6 +59,8 @@ Taimoor Chatha - tuc4uw
  */
 public class MainActivity extends FragmentActivity implements OnClickListener {
     private MainFragment mainFragment;
+    public static double currLocLong;
+    public static double currLocLat;
     Button sendIPbutton; //Button for sending IP Address
     EditText mEdit; //Get info from what user enters in form
     //TextView mText;
@@ -186,9 +188,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
     public class MyLocationListener implements LocationListener{
         @Override
         public void onLocationChanged(Location loc){
-            loc.getLatitude();
-            loc.getLongitude();
-            String Text = "Latitude: " + loc.getLatitude() + "\nLongitude:  " + loc.getLongitude();
+            currLocLat= loc.getLatitude();
+            currLocLong=loc.getLongitude();
+            String Text = "Latitude: " + loc.getLatitude() + " Longitude:  " + loc.getLongitude();
 //            Toast.makeText( getApplicationContext(),Text, Toast.LENGTH_SHORT).show();
 
 
@@ -230,6 +232,11 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 
     public void setObject(View view){
         Intent intent = new Intent(this, SetObjectActivity.class);
+        startActivity(intent);
+    }
+
+    public void play(View view){
+        Intent intent = new Intent(this, PlayActivity.class);
         startActivity(intent);
     }
 

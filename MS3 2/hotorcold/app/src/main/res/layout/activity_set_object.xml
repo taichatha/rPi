@@ -1,71 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:orientation="vertical"
-    android:background="@drawable/main_header_selector"
-    android:weightSum="1">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 
-    <!--<EditText-->
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</RelativeLayout>
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
     <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:hint="@string/to" />-->
-    <!--<EditText-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:hint="@string/subject" />-->
-    <!--<EditText-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="0dp"-->
-    <!--android:layout_weight="1"-->
-    <!--android:gravity="top"-->
-    <!--android:hint="@string/message" />-->
-    <!--<Button-->
-    <!--android:layout_width="100dp"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="right"-->
-    <!--android:text="@string/send" />-->
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+    <!--android:layout_height="match_parent"-->
+    <!--android:paddingLeft="16dp"-->
+    <!--android:paddingRight="16dp"-->
+    <!--android:orientation="vertical"-->
+    <!--android:background="@drawable/main_header_selector"-->
+    <!--android:weightSum="1">-->
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/logo"
-            android:src="@drawable/setobject"
-            android:layout_centerHorizontal="true"
-            android:paddingTop="30dp"
-            android:paddingBottom="0dp" />
-    </RelativeLayout>
+    <!--&lt;!&ndash;<EditText&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:hint="@string/to" />&ndash;&gt;-->
+    <!--&lt;!&ndash;<EditText&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:hint="@string/subject" />&ndash;&gt;-->
+    <!--&lt;!&ndash;<EditText&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_height="0dp"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_weight="1"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:gravity="top"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:hint="@string/message" />&ndash;&gt;-->
+    <!--&lt;!&ndash;<Button&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_width="100dp"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_gravity="right"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:text="@string/send" />&ndash;&gt;-->
+    <!--<RelativeLayout-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content">-->
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="131dp"
-        android:id="@+id/maplayout"
-        android:layout_weight="0.67"
-        android:paddingTop="30dp">
+        <!--<ImageView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/logo"-->
+            <!--android:src="@drawable/setobject"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:paddingTop="30dp"-->
+            <!--android:paddingBottom="0dp" />-->
+    <!--</RelativeLayout>-->
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/map_border"
-            android:src="@drawable/circle"
-            android:focusableInTouchMode="false"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+    <!--<RelativeLayout-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="131dp"-->
+        <!--android:id="@+id/maplayout"-->
+        <!--android:layout_weight="0.67"-->
+        <!--android:paddingTop="30dp">-->
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Set"
-            android:id="@+id/set"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
+        <!--<Button-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Set"-->
+            <!--android:id="@+id/set"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_centerHorizontal="true" />-->
 
-    </RelativeLayout>
+    <!--</RelativeLayout>-->
 
 
-</LinearLayout>
+<!--</LinearLayout>-->

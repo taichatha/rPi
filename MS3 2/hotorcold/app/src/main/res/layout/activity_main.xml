@@ -35,24 +35,25 @@
         android:layout_weight="0.67"
         android:paddingTop="30dp">
 
-        <ImageView
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/map_border"
-            android:src="@drawable/circle"
-            android:focusableInTouchMode="false"
-            android:layout_alignParentTop="true"
+            android:text="Play"
+            android:id="@+id/button"
+            android:onClick="setObject"
+            android:clickable="true"
             android:layout_centerHorizontal="true" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Play/Set"
+            android:text="Set"
             android:id="@+id/Set"
             android:onClick="setObject"
             android:clickable="true"
-            android:layout_below="@+id/map_border"
-            android:layout_centerHorizontal="true" />
+            android:layout_below="@+id/button"
+            android:layout_alignLeft="@+id/button"
+            android:layout_alignStart="@+id/button" />
 
     </RelativeLayout>
 
