@@ -25,8 +25,8 @@ public class SetObjectActivity extends Activity {
     Marker theMarker;
     MarkerOptions destinationMarker;
     Marker userPosition;
-    public LatLng start;
-    public LatLng destination;
+    public static LatLng start;
+    public static LatLng destination;
     public static double distance;
     boolean intialized;
     @Override
@@ -136,7 +136,7 @@ public class SetObjectActivity extends Activity {
     }
 
 //http://stackoverflow.com/questions/14394366/find-distance-between-two-points-on-map-using-google-map-api-v2
-    public double CalculationByDistance(LatLng StartP, LatLng EndP) {
+    public static double CalculationByDistance(LatLng StartP, LatLng EndP) {
         int Radius=6371;//radius of earth in Km
         double lat1 = StartP.latitude;
         double lat2 = EndP.latitude;

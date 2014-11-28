@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:text="Play"
             android:id="@+id/button"
-            android:onClick="setObject"
+            android:onClick="play"
             android:clickable="true"
             android:layout_centerHorizontal="true" />
 
