@@ -237,6 +237,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 
     public void play(View view){
         Intent intent = new Intent(this, PlayActivity.class);
+        System.out.println("Gotcha:!" + SetObjectActivity.distance);
+
         startActivity(intent);
     }
 

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -17,14 +18,17 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.text.DecimalFormat;
 
 public class SetObjectActivity extends Activity {
     private GoogleMap googleMap;
     Marker theMarker;
+    MarkerOptions destinationMarker;
     Marker userPosition;
     public LatLng start;
     public LatLng destination;
-    public double distance;
+    public static double distance;
+    boolean intialized;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +36,10 @@ public class SetObjectActivity extends Activity {
 
         try {
             // Loading map
-            initilizeMap();
+            intialized = true;
+            initializeMap();
+
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -43,7 +50,7 @@ public class SetObjectActivity extends Activity {
     /**
      * function to load map. If map is not created it will create it for you
      * */
-    private void initilizeMap() {
+    private void initializeMap() {
         if (googleMap == null) {
             googleMap = ((MapFragment) getFragmentManager().findFragmentById(
                     R.id.map)).getMap();
@@ -62,7 +69,6 @@ public class SetObjectActivity extends Activity {
 // create marker
 
 
-        theMarker = null;
 
         googleMap.setMyLocationEnabled(true);
         Location location = googleMap.getMyLocation();
@@ -70,6 +76,7 @@ public class SetObjectActivity extends Activity {
         if(location != null){
             myLocation = new LatLng(location.getLatitude(), location.getLongitude());
         }
+        start = myLocation;
         CameraPosition cameraPosition = new CameraPosition.Builder().target(myLocation).zoom(21).build();
 
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
@@ -81,9 +88,13 @@ public class SetObjectActivity extends Activity {
 // adding marker
         userPosition = googleMap.addMarker(marker);
 
+
+
         googleMap.getUiSettings().setZoomGesturesEnabled(false);
         googleMap.getUiSettings().setZoomControlsEnabled(false);
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+
+
 
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
@@ -94,16 +105,21 @@ public class SetObjectActivity extends Activity {
                     System.out.println("Should only happen once!");
                     destination = point;
                     theMarker = googleMap.addMarker(new MarkerOptions().position(point));
+                    distance = CalculationByDistance(start, destination);
+
                 }
                 else{
                     theMarker.remove();
                     destination = point;
                     theMarker = googleMap.addMarker(new MarkerOptions().position(point));
+                    distance = CalculationByDistance(start, destination);
+
                 }
             }
         });
 
-        //Need to add distance. Very simple.
+
+        System.out.println(distance);
 
 
 
@@ -111,9 +127,37 @@ public class SetObjectActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        initilizeMap();
+        if(!intialized)
+            initializeMap();
+    }
+    @Override
+    protected void onPause(){
+        super.onPause();
     }
 
+//http://stackoverflow.com/questions/14394366/find-distance-between-two-points-on-map-using-google-map-api-v2
+    public double CalculationByDistance(LatLng StartP, LatLng EndP) {
+        int Radius=6371;//radius of earth in Km
+        double lat1 = StartP.latitude;
+        double lat2 = EndP.latitude;
+        double lon1 = StartP.longitude;
+        double lon2 = EndP.longitude;
+        double dLat = Math.toRadians(lat2-lat1);
+        double dLon = Math.toRadians(lon2-lon1);
+        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                        Math.sin(dLon/2) * Math.sin(dLon/2);
+        double c = 2 * Math.asin(Math.sqrt(a));
+        double valueResult= Radius*c;
+        double km=valueResult/1;
+        DecimalFormat newFormat = new DecimalFormat("####");
+        int kmInDec =  Integer.valueOf(newFormat.format(km));
+        double meter=valueResult%1000;
+        int  meterInDec= Integer.valueOf(newFormat.format(meter));
+        Log.i("Radius Value", "" + valueResult + "   KM  " + kmInDec + " Meter   " + meterInDec);
+
+        return Radius * c;
+    }
 
 
 }
