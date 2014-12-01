@@ -25,6 +25,7 @@ public class PlayActivity extends Activity {
     public static LatLng updatedLocation;
     public static double ratio;
     public static double newDistance;
+    private Handler mHandler;
 
     public static double currLocLong;
     public static double currLocLat;
@@ -38,9 +39,10 @@ public class PlayActivity extends Activity {
         LocationListener mlocListener = new MyLocationListener();
         mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, mlocListener);
 
-        Handler mHandler = new Handler(){
+        mHandler = new Handler(){
 
-            public void handleMessage(String txt){
+            public void handleMessage(Message msg){
+                String txt = (String)msg.obj;
                 distanceView.setText(txt);
 
             }
@@ -58,7 +60,9 @@ public class PlayActivity extends Activity {
                     ratio = newDistance/SetObjectActivity.distance;
                 }
                 if(ratio!= 0){
-                    mHandler.handleMessage(""+ratio);
+                    Message ratioMsg = new Message();
+                    ratioMsg.obj = ""+ratio;
+                    mHandler.handleMessage(ratioMsg);
                 }
             }
         };
