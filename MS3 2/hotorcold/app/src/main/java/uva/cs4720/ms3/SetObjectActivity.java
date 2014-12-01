@@ -29,9 +29,6 @@ public class SetObjectActivity extends Activity {
     public static LatLng destination;
     public static double distance;
     boolean intialized;
-    private final static int
-            CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,10 +63,6 @@ public class SetObjectActivity extends Activity {
             }
 
         }
-        googleMap.getUiSettings().setZoomGesturesEnabled(false);
-        googleMap.getUiSettings().setZoomControlsEnabled(false);
-        googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-        googleMap.setMyLocationEnabled(true);
         double latitude = MainActivity.currLocLat;
         double longitude = MainActivity.currLocLong;
 
@@ -77,29 +70,29 @@ public class SetObjectActivity extends Activity {
 
 
 
+        googleMap.setMyLocationEnabled(true);
         Location location = googleMap.getMyLocation();
         LatLng myLocation = new LatLng(latitude, longitude);
         if(location != null){
             myLocation = new LatLng(location.getLatitude(), location.getLongitude());
         }
-        myLocation = new LatLng(location.getLatitude(), location.getLongitude());
         start = myLocation;
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(myLocation).zoom(21).build();
 
-
-
+        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
 
         MarkerOptions marker = new MarkerOptions().position(myLocation).title("Your Location");
         // ROSE color icon
         marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+// adding marker
         userPosition = googleMap.addMarker(marker);
 
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(myLocation).zoom(21).build();
-        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-// adding marker
 
 
-
+        googleMap.getUiSettings().setZoomGesturesEnabled(false);
+        googleMap.getUiSettings().setZoomControlsEnabled(false);
+        googleMap.getUiSettings().setMyLocationButtonEnabled(true);
 
 
 
