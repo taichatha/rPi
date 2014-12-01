@@ -35,10 +35,7 @@ public class PlayActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
-        LocationManager mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        LocationListener mlocListener = new MyLocationListener();
-        mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, mlocListener);
-
+        
         mHandler = new Handler(){
 
             public void handleMessage(Message msg){
@@ -77,39 +74,6 @@ public class PlayActivity extends Activity {
     }
 
 
-    public class MyLocationListener implements LocationListener {
-        @Override
-        public void onLocationChanged(Location loc){
-            currLocLat= loc.getLatitude();
-            currLocLong=loc.getLongitude();
-            updatedLocation = new LatLng(currLocLat, currLocLong);
-            String Text = "Latitude: " + loc.getLatitude() + " Longitude:  " + loc.getLongitude();
-//            Toast.makeText( getApplicationContext(),Text, Toast.LENGTH_SHORT).show();
-
-        }
-
-
-        @Override
-        public void onProviderDisabled(String provider){
-            Toast.makeText(getApplicationContext(),
-                    "Gps Disabled",
-
-                    Toast.LENGTH_SHORT).show();
-
-        }
-
-
-        @Override
-        public void onProviderEnabled(String provider){
-            Toast.makeText( getApplicationContext(),"Gps Enabled",Toast.LENGTH_SHORT).show();
-        }
-
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras){
-        }
-
-    }/* End of Class MyLocationListener */
 //    http://stackoverflow.com/questions/4776514/updating-textview-every-n-seconds
 //    private Timer timer;
 //    private TimerTask timerTask;
