@@ -25,7 +25,8 @@ public class PlayActivity extends Activity {
     public static LatLng updatedLocation;
     public static double ratio;
     public static double newDistance;
-    private Handler mHandler;
+    private Timer timer;
+
 
     public static double currLocLong;
     public static double currLocLat;
@@ -35,44 +36,64 @@ public class PlayActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
+        distanceView = (TextView) findViewById(R.id.distanceView);
         LocationManager mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         LocationListener mlocListener = new MyLocationListener();
         mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, mlocListener);
+//        Handler mHandler = new Handler(){
+//
+//            public void handleMessage(Message msg){
+//                String txt = (String)msg.obj;
+//                distanceView.setText(txt);
+//
+//            }
+//
+//        };
 
-        mHandler = new Handler(){
 
-            public void handleMessage(Message msg){
-                String txt = (String)msg.obj;
-                distanceView.setText(txt);
+        timer = new Timer();
 
-            }
 
-        };
-        distanceView = (TextView) findViewById(R.id.distanceView);
+        timer.schedule(new timerTask(), 0, 5000);
 
-        Timer timer = new Timer();
-        TimerTask timerTask;
-        timerTask = new TimerTask(){
-            @Override
-            public void run(){
-                if(updatedLocation!=null){
-                    newDistance = SetObjectActivity.CalculationByDistance(updatedLocation, SetObjectActivity.destination);
-                    ratio = newDistance/SetObjectActivity.distance;
+
+
+
+
+
+
+    }
+
+
+    private class timerTask extends TimerTask{
+        @Override
+        public void run(){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if(updatedLocation!=null){
+                        newDistance = SetObjectActivity.CalculationByDistance(updatedLocation, SetObjectActivity.destination);
+                        ratio = newDistance/SetObjectActivity.distance;
+                    }
+                    if(ratio!= 0){
+                        distanceView.setText(""+ratio);
+//                        Message ratioMsg = new Message();
+//                        ratioMsg.obj = ""+ratio;
+//                        mHandler.handleMessage(ratioMsg);
+                    }
+
+
                 }
-                if(ratio!= 0){
-                    Message ratioMsg = new Message();
-                    ratioMsg.obj = ""+ratio;
-                    mHandler.handleMessage(ratioMsg);
-                }
-            }
-        };
-        timer.schedule(timerTask, 0, 5000);
+            });
+
+        }
+    }
 
 
 
 
 
-
+    protected static void startTimer(){
 
     }
 

@@ -82,7 +82,7 @@ public class SetObjectActivity extends Activity {
         if(location != null){
             myLocation = new LatLng(location.getLatitude(), location.getLongitude());
         }
-        myLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        myLocation = new LatLng(latitude, longitude);
         start = myLocation;
 
 
