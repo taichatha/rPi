@@ -74,8 +74,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
         mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, mlocListener);
 
 
-
-
         setContentView(R.layout.activity_main);
 
         /*http://www.firstdroid.com/2010/04/29/android-development-using-gps-to-get-current-location-2/*/
@@ -192,7 +190,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
         public void onLocationChanged(Location loc){
             currLocLat= loc.getLatitude();
             currLocLong=loc.getLongitude();
-
             String Text = "Latitude: " + loc.getLatitude() + " Longitude:  " + loc.getLongitude();
 //            Toast.makeText( getApplicationContext(),Text, Toast.LENGTH_SHORT).show();
 
