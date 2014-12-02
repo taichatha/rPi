@@ -126,7 +126,7 @@ public class SetObjectActivity extends Activity {
         });
 
 
-        System.out.println(distance);
+        System.out.println("Help!" + distance);
 
 
 
