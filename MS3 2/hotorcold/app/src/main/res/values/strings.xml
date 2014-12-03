@@ -12,5 +12,11 @@
     <string name="title_activity_play">PlayActivity</string>
     <string name="title_activity_congrats">CongratsActivity</string>
     <string name="title_activity_set_ip">SetIPActivity</string>
-
+    <string name="title_activity_how_to_play">HowToPlayActivity</string>
+    <string name="step1">1) Connect to RPi</string>
+    <string name="step1detail">Set the Current IP to the IP of your Raspberry Pi</string>
+    <string name="step2">2) Player 1 Set Destination</string>
+    <string name="step2detail">One player sets the destination by pressing the set button and placing a marker down</string>
+    <string name="step3">3) Player 2 Start Looking</string>
+    <string name="step3detail">Press Play and Enjoy.</string>
 </resources>

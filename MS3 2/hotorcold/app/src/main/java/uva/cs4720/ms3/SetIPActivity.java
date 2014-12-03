@@ -64,6 +64,7 @@ public class SetIPActivity extends Activity implements OnClickListener {
         /*get reference to views*/
         sendIPbutton = (Button) findViewById(R.id.sendIP);
         mEdit = (EditText) findViewById(R.id.enterIP);
+        set_ip = mEdit.getText().toString();
         sendIPbutton.setOnClickListener(this);
         /*add click listener to Button "sendIPbutton"*/
 //        sendIPbutton.setOnClickListener(new OnClickListener() {
@@ -94,6 +95,8 @@ public class SetIPActivity extends Activity implements OnClickListener {
     @Override
     public void onClick(View view) {
         set_ip = mEdit.getText().toString();
+        MainFragment.firstTextIP = set_ip;
+        MainFragment.ipView.setText(set_ip);
         System.out.println("Help:" + set_ip);
         finish();
 //        switch(view.getId()){

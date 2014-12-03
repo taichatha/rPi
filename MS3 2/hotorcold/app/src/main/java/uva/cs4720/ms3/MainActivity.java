@@ -62,16 +62,21 @@ public class MainActivity extends FragmentActivity{
     public static double currLocLong;
     public static double currLocLat;
     //TextView mText;
-    TextView coordinates;
+    public static TextView coordinates;
+//    TextView ipView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        ipView = (TextView)findViewById(R.id.ipView);
+//        ipView = (TextView)findViewById(R.id.ipView);
 
-        LocationManager mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        LocationListener mlocListener = new MyLocationListener();
-        mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, mlocListener);
+//        LocationManager mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+//        LocationListener mlocListener = new MyLocationListener();
+//        mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, mlocListener);
 
-
+//        if(ipView.getText().toString() != "NOT SET!"){
+//            //make set button active
+//        }
         setContentView(R.layout.activity_main);
 
         /*http://www.firstdroid.com/2010/04/29/android-development-using-gps-to-get-current-location-2/*/
@@ -84,6 +89,7 @@ public class MainActivity extends FragmentActivity{
 /**********************************************************************/
         /*get reference to views*/
         coordinates = (TextView)findViewById(R.id.coordinates);
+
 
 
 
@@ -114,43 +120,42 @@ public class MainActivity extends FragmentActivity{
 /*********************************************************************************/
     }
 
-
-    /* Class My Location Listener */
-    public class MyLocationListener implements LocationListener{
-        @Override
-        public void onLocationChanged(Location loc){
-            currLocLat= loc.getLatitude();
-            currLocLong=loc.getLongitude();
-            String Text = "Latitude: " + loc.getLatitude() + " Longitude:  " + loc.getLongitude();
-//            Toast.makeText( getApplicationContext(),Text, Toast.LENGTH_SHORT).show();
-
-
-            coordinates.setText(Text);
-        }
-
-
-        @Override
-        public void onProviderDisabled(String provider){
-            Toast.makeText( getApplicationContext(),
-                    "Gps Disabled",
-
-                    Toast.LENGTH_SHORT ).show();
-
-        }
-
-
-        @Override
-        public void onProviderEnabled(String provider){
-            Toast.makeText( getApplicationContext(),"Gps Enabled",Toast.LENGTH_SHORT).show();
-        }
-
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras){
-        }
-
-    }/* End of Class MyLocationListener */
-
+//
+//    /* Class My Location Listener */
+//    public class MyLocationListener implements LocationListener{
+//        @Override
+//        public void onLocationChanged(Location loc){
+//            currLocLat= loc.getLatitude();
+//            currLocLong=loc.getLongitude();
+//            String Text = "Latitude: " + loc.getLatitude() + " Longitude:  " + loc.getLongitude();
+////            Toast.makeText( getApplicationContext(),Text, Toast.LENGTH_SHORT).show();
+//
+//            coordinates.setText(Text);
+//        }
+//
+//
+//        @Override
+//        public void onProviderDisabled(String provider){
+//            Toast.makeText( getApplicationContext(),
+//                    "Gps Disabled",
+//
+//                    Toast.LENGTH_SHORT ).show();
+//
+//        }
+//
+//
+//        @Override
+//        public void onProviderEnabled(String provider){
+//            Toast.makeText( getApplicationContext(),"Gps Enabled",Toast.LENGTH_SHORT).show();
+//        }
+//
+//
+//        @Override
+//        public void onStatusChanged(String provider, int status, Bundle extras){
+//        }
+//
+//    }/* End of Class MyLocationListener */
+//
 
 
 
@@ -165,7 +170,12 @@ public class MainActivity extends FragmentActivity{
     }
     public void play(View view){
         Intent intent = new Intent(this, PlayActivity.class);
-        System.out.println("Gotcha:!" + SetObjectActivity.distance);
+
+        startActivity(intent);
+    }
+
+    public void howToPlay(View view){
+        Intent intent = new Intent(this, HowToPlayActivity.class);
 
         startActivity(intent);
     }

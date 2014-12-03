@@ -2,7 +2,9 @@ package uva.cs4720.ms3;
 
 import android.app.Activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
@@ -13,9 +15,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,7 +52,7 @@ public class PlayActivity extends Activity {
     public static double ratio;
     public static double newDistance;
     public static double prevDistance;
-    private Timer timer;
+    public static Timer timer;
     public static int red;
     public static int green;
     public static int blue;
@@ -57,23 +61,27 @@ public class PlayActivity extends Activity {
     public static String ip;
     public static double currLocLong;
     public static double currLocLat;
+    public static Button quitButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
+
         gameEnd = false;
         ip = SetIPActivity.set_ip;
 //        ip = "http://"+SetIPActivity.set_ip+"/rpi/";
-        System.out.println(ip);
+//        System.out.println(ip);
+        System.out.println(SetObjectActivity.distance);
         red = 0;
         green = 255;
         blue = 0;
         new HttpAsyncTask().execute("http://hmkcode.appspot.com/jsonservlet");
 
         //Green is neutral
-
+        quitButton = (Button) findViewById(R.id.quitButton);
         distanceView = (TextView) findViewById(R.id.distanceView);
+        distanceView.setText("Ratio:");
         RedNum = (TextView) findViewById(R.id.RedNum);
         GreenNum = (TextView) findViewById(R.id.GreenNum);
         BlueNum = (TextView) findViewById(R.id.BlueNum);
@@ -100,9 +108,9 @@ public class PlayActivity extends Activity {
         timer = new Timer();
 
 
-        timer.schedule(new timerTask(), 0, 5000);
+        timer.schedule(new timerTask(), 0, 7000);
 
-
+        System.out.println("It's over!");
 
 
 
@@ -121,10 +129,12 @@ public class PlayActivity extends Activity {
 //                        prevDistance = newDistance;
                         newDistance = SetObjectActivity.CalculationByDistance(updatedLocation, SetObjectActivity.destination);
                         ratio = newDistance/SetObjectActivity.distance;
+                        System.out.println(ratio);
+                        checkWin(newDistance);
 
                     }
 
-                    //checkWin(newDistance);
+
 
 //                    if(newDistance <= 0.003048 ) {//10 ft{
 //                        hotorcold.setText("HERE!");
@@ -145,7 +155,7 @@ public class PlayActivity extends Activity {
                         distanceView.setText("Ratio:" + ratio);
 
                         if (ratio <= 1.1 && ratio >= .9) {
-                            hotorcold.setText("At the Start");
+                            hotorcold.setText("NEUTRAL");
                             red = 0;
                             blue = 0;
                             green = 255;
@@ -242,6 +252,10 @@ public class PlayActivity extends Activity {
     public void checkWin(double distance){
         if(distance < .003048){//10 ft
 //            Congrats();
+            timer.cancel();
+            timer.purge();
+            SetObjectActivity.theMarker = null;
+            MainFragment.playButton.setEnabled(false);
             Intent intent = new Intent(this, CongratsActivity.class);
             finish();
             startActivity(intent);
@@ -253,11 +267,11 @@ public class PlayActivity extends Activity {
         }
 
     }
-    public void Congrats(View view){
-        Intent intent = new Intent(this, CongratsActivity.class);
-        startActivity(intent);
-
-    }
+//    public void Congrats(View view){
+//        Intent intent = new Intent(this, CongratsActivity.class);
+//        startActivity(intent);
+//
+//    }
 
     public class MyLocationListener implements LocationListener {
         @Override
@@ -307,10 +321,10 @@ public class PlayActivity extends Activity {
         try {
             //1. CREATE HTTPCLIENT
             HttpClient httpclient = new DefaultHttpClient();
-            System.out.println("no error");
+//            System.out.println("no error");
             //2. MAKE POST REQUEST TO GIVEN ipAddress
             HttpPost httpPost = new HttpPost(ip);
-            System.out.println("no error2");
+//            System.out.println("no error2");
 
             //String json = "";
             //3. BUILD JSON OBJECT
@@ -345,7 +359,7 @@ public class PlayActivity extends Activity {
 
         } catch (Exception e) {
 
-            Log.d("InputStream Did not Work:", e.getLocalizedMessage());
+            Log.d("InputStream:", e.getLocalizedMessage());
         }
 
         return result;
@@ -387,7 +401,8 @@ public class PlayActivity extends Activity {
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(getBaseContext(), "Data Sent!", Toast.LENGTH_LONG).show();
+            System.out.println("Data Sent!");
+//            Toast.makeText(getBaseContext(), "Data Sent!", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -435,12 +450,41 @@ public class PlayActivity extends Activity {
 //            android.util.Log.i("Damn", "resume error");
 //        }
 //    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.play, menu);
         return true;
     }
+
+
+    public void quitGame(View view) {
+        new AlertDialog.Builder(this)
+                .setTitle("Delete entry")
+                .setMessage("Are you sure you want to quit the game?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                        timer.cancel();
+                        timer.purge();
+                        SetObjectActivity.theMarker = null;
+                        MainFragment.playButton.setEnabled(false);
+
+
+
+                        finish();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -36,17 +36,28 @@ import org.json.JSONObject;
 
 public class MainFragment extends Fragment {
     private Button shareButton;
+    public static Button playButton;
+    public static Button setButton;
+    private Button howToPlayButton;
     private Context globalContext = null;
     private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
     private static final String PENDING_PUBLISH_KEY = "pendingPublishReauthorization";
     private boolean pendingPublishReauthorization = false;
     private static final String TAG = MainFragment.class.getSimpleName();
     TextView coordinates;
+    public static TextView ipView;
+    public static String firstTextIP;
+    public static String taboo;
+    public static String firstTextCoord;
+    public static double currLocLong;
+    public static double currLocLat;
+
 
 
     Button sendIPbutton; //Button for sending IP Address
     EditText mEdit; //Get info from what user enters in form
     private UiLifecycleHelper uiHelper;
+
 
     private final List<String> permissions;
 
@@ -73,7 +84,25 @@ public class MainFragment extends Fragment {
         shareButton = (Button) view.findViewById(R.id.shareButton);
         coordinates = (TextView)view.findViewById(R.id.coordinates);
         sendIPbutton = (Button) view.findViewById(R.id.sendIP);
+        howToPlayButton = (Button) view.findViewById(R.id.howtoplay);
         mEdit = (EditText) view.findViewById(R.id.enterIP);
+        ipView = (TextView)view.findViewById(R.id.ipView);
+        if(firstTextIP == null){
+            taboo = ipView.getText().toString();
+
+        }
+        else{
+            ipView.setText(firstTextIP);
+        }
+
+        firstTextCoord= coordinates.getText().toString();
+        setButton = (Button) view.findViewById(R.id.setButton);
+        playButton = (Button) view.findViewById(R.id.playButton);
+        setButton.setEnabled(false);
+
+        playButton.setEnabled(false);
+
+
 
 
         LocationManager mlocManager = (LocationManager)globalContext.getSystemService(Context.LOCATION_SERVICE);
@@ -234,13 +263,19 @@ public class MainFragment extends Fragment {
     public class MyLocationListener implements LocationListener {
         @Override
         public void onLocationChanged(Location loc){
-            loc.getLatitude();
-            loc.getLongitude();
-            String Text = "Latitude: " + loc.getLatitude() + "\nLongitude:  " + loc.getLongitude();
+            currLocLat=loc.getLatitude();
+            currLocLong=loc.getLongitude();
+            String Text = "Latitude Who: " + loc.getLatitude() + "\nLongitude:  " + loc.getLongitude();
+            if(!(ipView.getText().toString().equals(taboo)))
+                setButton.setEnabled(true);
+            if(SetObjectActivity.theMarker != null) {
+                playButton.setEnabled(true);
+            }
 //            Toast.makeText( getApplicationContext(),Text, Toast.LENGTH_SHORT).show();
 
 
             coordinates.setText(Text);
+
         }
 
 
