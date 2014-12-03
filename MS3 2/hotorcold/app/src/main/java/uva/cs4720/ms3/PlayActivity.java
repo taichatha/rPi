@@ -7,19 +7,33 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Message;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Timer;
 import java.util.TimerTask;
 import android.os.Handler;
 
 import com.google.android.gms.maps.model.LatLng;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 
 public class PlayActivity extends Activity {
@@ -28,6 +42,7 @@ public class PlayActivity extends Activity {
     TextView GreenNum;
     TextView BlueNum;
     TextView hotorcold;
+    boolean gameEnd;
 
     public static LatLng updatedLocation;
     public static double ratio;
@@ -39,7 +54,7 @@ public class PlayActivity extends Activity {
     public static int blue;
     public static double newRed;
     public static double newBlue;
-
+    public static String ip;
     public static double currLocLong;
     public static double currLocLat;
 
@@ -47,9 +62,15 @@ public class PlayActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
+        gameEnd = false;
+        ip = SetIPActivity.set_ip;
+//        ip = "http://"+SetIPActivity.set_ip+"/rpi/";
+        System.out.println(ip);
         red = 0;
         green = 255;
         blue = 0;
+        new HttpAsyncTask().execute("http://hmkcode.appspot.com/jsonservlet");
+
         //Green is neutral
 
         distanceView = (TextView) findViewById(R.id.distanceView);
@@ -103,6 +124,8 @@ public class PlayActivity extends Activity {
 
                     }
 
+                    //checkWin(newDistance);
+
 //                    if(newDistance <= 0.003048 ) {//10 ft{
 //                        hotorcold.setText("HERE!");
 //                        red = 255;
@@ -112,8 +135,12 @@ public class PlayActivity extends Activity {
 //                        timer.purge();
 //                    }
 
-
-
+                    //Should add capability that if prevdistance
+                    //is closer than current distance, then colder
+                    //perhaps for each situation(.9-.6, .6-.3, etc)
+                    //the best thing would be to do would make it
+                    //so that lights let you know if you are getting closer.
+                    //Hmm actually im not sure.
                     if (ratio != 0) {
                         distanceView.setText("Ratio:" + ratio);
 
@@ -122,6 +149,8 @@ public class PlayActivity extends Activity {
                             red = 0;
                             blue = 0;
                             green = 255;
+                            new HttpAsyncTask().execute("http://hmkcode.appspot.com/jsonservlet");
+//                            POST(red, green, blue);
                         }
                         else if (ratio < .9) {
 
@@ -149,6 +178,9 @@ public class PlayActivity extends Activity {
                             BlueNum.setText("" + blue);
                             RedNum.setText("" + red);
                             GreenNum.setText("" + green);
+                            new HttpAsyncTask().execute("http://hmkcode.appspot.com/jsonservlet");
+
+//                            POST(red, green, blue);
 
 
                         }
@@ -177,6 +209,9 @@ public class PlayActivity extends Activity {
                             BlueNum.setText("" + blue);
                             RedNum.setText("" + red);
                             GreenNum.setText("" + green);
+                            new HttpAsyncTask().execute("http://hmkcode.appspot.com/jsonservlet");
+
+//                            POST(red, green, blue);
 
 
                         }
@@ -205,9 +240,10 @@ public class PlayActivity extends Activity {
 
 
     public void checkWin(double distance){
-        if(distance < 0.0003048){
+        if(distance < .003048){//10 ft
 //            Congrats();
             Intent intent = new Intent(this, CongratsActivity.class);
+            finish();
             startActivity(intent);
 
             //Reset shit to 0
@@ -256,6 +292,125 @@ public class PlayActivity extends Activity {
         }
 
     }/* End of Class MyLocationListener */
+
+    public static String POST() {
+        //Add JSON Logic here
+        InputStream inputStream = null;
+        ip = SetIPActivity.set_ip;
+        ip = "http://"+ip+"/rpi/";
+        //((mEdit).getText().toString()) put on the line below if doesn't work
+        System.out.println(ip);
+        //String json = "{\"lights\": [{\"lightId\": 1, \"red\":242,\"green\":116,\"blue\":12, \"intensity\": 0.5}],\"propagate\": true}";
+
+
+        String result = "";
+        try {
+            //1. CREATE HTTPCLIENT
+            HttpClient httpclient = new DefaultHttpClient();
+            System.out.println("no error");
+            //2. MAKE POST REQUEST TO GIVEN ipAddress
+            HttpPost httpPost = new HttpPost(ip);
+            System.out.println("no error2");
+
+            //String json = "";
+            //3. BUILD JSON OBJECT
+            //JSONObject jsonObject = new JSONObject();
+            //jsonObject.accumulate("")
+            String json = "{\"lights\": [{\"lightId\": 1, \"red\":"+ red+",\"green\":"+green+",\"blue\":"+blue+", \"intensity\": 0.5}],\"propagate\": true}";
+//            String json = "{\"lights\": [{\"lightId\": 1, \"red\":242,\"green\":116,\"blue\":12, \"intensity\": 0.5}],\"propagate\": true}";
+
+            //5. SET JSON to STRING ENTITY
+            StringEntity se = new StringEntity(json);
+
+            // 6. set httpPost Entity
+            httpPost.setEntity(se);
+
+            // 7. Set some headers to inform server about the type of the content
+            //httpPost.setHeader("Accept", "application/json");
+//                    httpPost.setHeader("Content-type", "application/json");
+
+            // 8. Execute POST request to the given URL
+            HttpResponse httpResponse = httpclient.execute(httpPost);
+
+            // 9. receive response as inputStream
+            inputStream = httpResponse.getEntity().getContent();
+
+            System.out.println("no error8");
+            //10. CONVERT inputStream to string
+            if (inputStream != null) {
+                result = convertInputStreamToString(inputStream);
+                System.out.println("no error9");
+            } else
+                result = "Did not work!";
+
+        } catch (Exception e) {
+
+            Log.d("InputStream Did not Work:", e.getLocalizedMessage());
+        }
+
+        return result;
+    }
+//
+//
+//                mEdit = (EditText)findViewById(R.id.enterIP); //get text from form?
+//            }
+//        });
+
+    public boolean isConnected(){
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected())
+            return true;
+        else
+            return false;
+    }
+//    @Override
+//    public void onClick(View view) {
+//
+//        switch(view.getId()){
+//            case R.id.sendIP:
+//                if(!validate())
+//                    Toast.makeText(getBaseContext(), "Enter some data!", Toast.LENGTH_LONG).show();
+//                // call AsynTask to perform network operation on separate thread
+//                new HttpAsyncTask().execute("http://hmkcode.appspot.com/jsonservlet");
+//                break;
+//        }
+//
+//    }
+    private class HttpAsyncTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... urls) {
+
+
+            return POST();
+        }
+        // onPostExecute displays the results of the AsyncTask.
+        @Override
+        protected void onPostExecute(String result) {
+            Toast.makeText(getBaseContext(), "Data Sent!", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private boolean validate(){
+        if(ip.trim().equals(""))
+            return false;
+        else
+            return true;
+    }
+    private static String convertInputStreamToString(InputStream inputStream) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
+        String line = "";
+        String result = "";
+        while((line = bufferedReader.readLine()) != null)
+            result += line;
+
+        inputStream.close();
+        return result;
+
+    }
+
+
+
 //    http://stackoverflow.com/questions/4776514/updating-textview-every-n-seconds
 //    private Timer timer;
 //    private TimerTask timerTask;

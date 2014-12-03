@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import android.widget.Toast;
@@ -41,6 +42,10 @@ public class MainFragment extends Fragment {
     private boolean pendingPublishReauthorization = false;
     private static final String TAG = MainFragment.class.getSimpleName();
     TextView coordinates;
+
+
+    Button sendIPbutton; //Button for sending IP Address
+    EditText mEdit; //Get info from what user enters in form
     private UiLifecycleHelper uiHelper;
 
     private final List<String> permissions;
@@ -56,6 +61,7 @@ public class MainFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         globalContext = this.getActivity();
+
         uiHelper = new UiLifecycleHelper(getActivity(), callback);
         uiHelper.onCreate(savedInstanceState);
     }
@@ -66,6 +72,10 @@ public class MainFragment extends Fragment {
         View view = inflater.inflate(R.layout.activity_main, container, false);
         shareButton = (Button) view.findViewById(R.id.shareButton);
         coordinates = (TextView)view.findViewById(R.id.coordinates);
+        sendIPbutton = (Button) view.findViewById(R.id.sendIP);
+        mEdit = (EditText) view.findViewById(R.id.enterIP);
+
+
         LocationManager mlocManager = (LocationManager)globalContext.getSystemService(Context.LOCATION_SERVICE);
         LocationListener mlocListener = new MyLocationListener();
         mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, mlocListener);

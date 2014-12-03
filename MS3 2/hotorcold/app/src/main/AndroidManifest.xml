@@ -62,7 +62,13 @@
         <activity
             android:name=".CongratsActivity"
             android:label="@string/title_activity_congrats"
-            android:parentActivityName=".PlayActivity" >>
+            android:parentActivityName=".PlayActivity" >
+>
+        </activity>
+        <activity
+            android:name=".SetIPActivity"
+            android:label="@string/title_activity_set_ip"
+            android:parentActivityName=".MainActivity">
         </activity>
     </application>
 

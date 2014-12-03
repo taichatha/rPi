@@ -139,11 +139,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Send IP"
+            android:onClick="setIP"
             android:id="@+id/sendIP"
             android:layout_below="@+id/enterIP"
             android:layout_alignParentRight="true"
             android:layout_gravity="center_horizontal"
-            android:onClick="OnClick"
+
             />
 
 

@@ -1,12 +1,13 @@
 package uva.cs4720.ms3;
 
+import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class CongratsActivity extends ActionBarActivity {
+public class CongratsActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
