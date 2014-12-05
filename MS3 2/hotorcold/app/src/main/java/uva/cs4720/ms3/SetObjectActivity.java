@@ -5,7 +5,6 @@ import android.app.FragmentTransaction;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -23,7 +22,7 @@ import java.text.DecimalFormat;
 
 public class SetObjectActivity extends Activity {
     private GoogleMap googleMap;
-    public static Marker theMarker;
+    Marker theMarker;
     MarkerOptions destinationMarker;
     Marker userPosition;
     public static LatLng start;
@@ -71,8 +70,8 @@ public class SetObjectActivity extends Activity {
         googleMap.getUiSettings().setZoomControlsEnabled(false);
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
         googleMap.setMyLocationEnabled(true);
-        double latitude = MainFragment.currLocLat;
-        double longitude = MainFragment.currLocLong;
+        double latitude = MainActivity.currLocLat;
+        double longitude = MainActivity.currLocLong;
 
 // create marker
 
@@ -114,7 +113,6 @@ public class SetObjectActivity extends Activity {
                     destination = point;
                     theMarker = googleMap.addMarker(new MarkerOptions().position(point));
                     distance = CalculationByDistance(start, destination);
-                    MainFragment.playButton.setEnabled(true);
 
                 }
                 else{
@@ -122,7 +120,6 @@ public class SetObjectActivity extends Activity {
                     destination = point;
                     theMarker = googleMap.addMarker(new MarkerOptions().position(point));
                     distance = CalculationByDistance(start, destination);
-                    MainFragment.playButton.setEnabled(true);
 
                 }
             }
@@ -134,8 +131,16 @@ public class SetObjectActivity extends Activity {
 
 
     }
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!intialized)
+            initializeMap();
+    }
+    @Override
+    protected void onPause(){
+        super.onPause();
+    }
 
 //http://stackoverflow.com/questions/14394366/find-distance-between-two-points-on-map-using-google-map-api-v2
     public static double CalculationByDistance(LatLng StartP, LatLng EndP) {
@@ -156,7 +161,7 @@ public class SetObjectActivity extends Activity {
         int kmInDec =  Integer.valueOf(newFormat.format(km));
         double meter=valueResult%1000;
         int  meterInDec= Integer.valueOf(newFormat.format(meter));
-        Log.i("Distance:", "" + valueResult + "   KM  " + kmInDec + " Meter   " + meterInDec);
+        Log.i("Radius Value", "" + valueResult + "   KM  " + kmInDec + " Meter   " + meterInDec);
 
         return Radius * c;
     }

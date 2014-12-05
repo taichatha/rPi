@@ -6,8 +6,7 @@
     android:paddingRight="16dp"
     android:orientation="vertical"
     android:background="@drawable/main_header_selector"
-    android:weightSum="1"
-    android:id="@+id/mainlayout">
+    android:weightSum="1">
 
     <!--<EditText-->
         <!--android:layout_width="match_parent"-->
@@ -40,79 +39,50 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Play"
-            android:id="@+id/playButton"
+            android:id="@+id/button"
             android:onClick="play"
             android:clickable="true"
-            android:layout_marginLeft="97dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_centerHorizontal="true" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Set"
-            android:id="@+id/setButton"
+            android:id="@+id/Set"
             android:onClick="setObject"
             android:clickable="true"
-            android:layout_alignTop="@+id/playButton"
-            android:layout_toRightOf="@+id/playButton"
-            android:layout_toEndOf="@+id/playButton" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:id="@+id/gpsCoordinates"
-            android:layout_weight="0.13"
-            android:layout_below="@+id/setButton"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="33dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Current Location:"
-                android:id="@+id/currentLocation"
-                android:layout_gravity="center_horizontal"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Please Wait..."
-                android:id="@+id/coordinates"
-                android:paddingBottom="10dp"
-                android:layout_below="@+id/currentLocation"
-                android:layout_centerHorizontal="true" />
-
-            <com.facebook.widget.LoginButton
-                android:id="@+id/authButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true" />
-
-        </RelativeLayout>
+            android:layout_below="@+id/button"
+            android:layout_alignLeft="@+id/button"
+            android:layout_alignStart="@+id/button" />
 
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="67dp">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/gpsCoordinates"
+        android:layout_weight="0.13">
 
-        <!--<ImageView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/logo"-->
-        <!--android:src="@drawable/title"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:paddingTop="30dp"-->
-        <!--android:paddingBottom="0dp" />-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Current Location:"
+            android:id="@+id/currentLocation"
+            android:layout_gravity="center_horizontal"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Please Wait..."
+            android:id="@+id/coordinates"
+            android:paddingBottom="10dp"
+            android:layout_below="@+id/currentLocation"
+            android:layout_centerHorizontal="true" />
+
         <Button
             android:id="@+id/shareButton"
             android:layout_width="wrap_content"
@@ -124,68 +94,62 @@
             android:textColor="#fffffff7"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            android:layout_centerVertical="true"
+            android:layout_below="@+id/coordinates"
+            android:layout_alignRight="@+id/coordinates"
+            android:layout_alignEnd="@+id/coordinates"
+             />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="67dp">
+        <com.facebook.widget.LoginButton
+            android:id="@+id/authButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
+
+        <!--<ImageView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/logo"-->
+        <!--android:src="@drawable/title"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:paddingTop="30dp"-->
+        <!--android:paddingBottom="0dp" />-->
     </RelativeLayout>
 
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/ipLayout"
-        android:layout_weight="0.12"
-        android:paddingTop="10dp">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <!--<LinearLayout-->
             <!--android:focusable="true" android:focusableInTouchMode="true"-->
             <!--android:layout_width="0px" android:layout_height="0px"/>-->
 
-        <TextView
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/enterIP"
+            android:imeOptions ="actionDone"
+            android:hint="Enter IP" />
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Current IP:"
-            android:id="@+id/currentIPview"
-            android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/ipView"
-            android:layout_toStartOf="@+id/ipView"
-            android:layout_marginRight="14dp" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="NOT SET!"
-            android:id="@+id/ipView"
-            android:layout_alignParentTop="true"
+            android:text="Send IP"
+            android:onClick="setIP"
+            android:id="@+id/sendIP"
+            android:layout_below="@+id/enterIP"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginRight="68dp" />
+            android:layout_gravity="center_horizontal"
+
+            />
 
 
-    </RelativeLayout>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Set IP"
-        android:onClick="setIP"
-        android:id="@+id/sendIP"
-        android:layout_gravity="center_horizontal"
-
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="How to Play?"
-        android:onClick="howToPlay"
-        android:id="@+id/howtoplay"
-        android:layout_gravity="center_horizontal"
-
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+     </RelativeLayout>
 
 
 </LinearLayout>

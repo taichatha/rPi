@@ -40,7 +40,7 @@
         </activity>
         <activity
             android:name=".PlayActivity"
-            android:label=""
+            android:label="@string/title_activity_play"
             android:parentActivityName=".MainActivity" >
 
             <!-- android:noHistory="true" -->
@@ -61,18 +61,13 @@
 
         <activity
             android:name=".CongratsActivity"
-            android:label=""
+            android:label="@string/title_activity_congrats"
             android:parentActivityName=".PlayActivity" >
 >
         </activity>
         <activity
             android:name=".SetIPActivity"
-            android:label="Set IP"
-            android:parentActivityName=".MainActivity" >
-        </activity>
-        <activity
-            android:name=".HowToPlayActivity"
-            android:label="How to Play"
+            android:label="@string/title_activity_set_ip"
             android:parentActivityName=".MainActivity">
         </activity>
     </application>
