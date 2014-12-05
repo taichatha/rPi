@@ -11,6 +11,5 @@
     <string name="share">Post Location to FB</string>
     <string name="title_activity_play">PlayActivity</string>
     <string name="title_activity_congrats">CongratsActivity</string>
-    <string name="title_activity_set_ip">SetIPActivity</string>
 
 </resources>
